@@ -1,12 +1,16 @@
 using UnityEngine;
 
-public class ManualCircleMovement : MonoBehaviour
+public class ManualCircle : MonoBehaviour
 {
     // posisi manual yang kita simpan sendiri (bukan memakai transform langsung)
     private Vector2 position;
 
     // kecepatan gerak
-    public float speed = 5f;
+    public float speed = 2f;
+    
+    public GameObject smokePrefab;
+    public float smokeSpawnRate = 0.1f; // 1 asap setiap 0.1 detik
+    private float smokeTimer = 0f;
 
     void Start()
     {
@@ -41,5 +45,35 @@ public class ManualCircleMovement : MonoBehaviour
 
         // update ke transform unity (boleh, karena ini hanya assign posisi)
         transform.position = new Vector3(position.x, position.y, 0f);
+
+        // ======== SPAWN ASAP SAAT SHIFT ========
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            smokeTimer += Time.deltaTime;
+
+            if (smokeTimer >= smokeSpawnRate)
+            {
+                SpawnSmoke();
+                smokeTimer = 0f;
+            }
+        }
+        else
+        {
+            // reset timer agar tidak meledak saat ditekan lagi
+            smokeTimer = smokeSpawnRate;
+        }
+    }
+
+    void SpawnSmoke()
+    {
+            GameObject s = Instantiate(
+                smokePrefab, 
+                new Vector3(position.x, position.y, 0f),
+                Quaternion.identity
+                );
+
+        SmokeParticle sp = s.GetComponent<SmokeParticle>();
+        sp.SetStartPosition(position);
     }
 }
+
