@@ -154,3 +154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d603fed0238b7d0428dfca7f1c9b5316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriangleItem
+  lifetime: 9
+  shrinkDuration: 1
+  vanishEffectPrefab: {fileID: 0}
