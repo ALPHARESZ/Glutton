@@ -4,7 +4,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public int score = 0;
+    public int score = 10;
     public TMP_Text scoreText;
 
     void Awake()

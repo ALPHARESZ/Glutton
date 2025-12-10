@@ -5,6 +5,10 @@ public class ManualCircle : MonoBehaviour
     // posisi manual yang kita simpan sendiri (bukan memakai transform langsung)
     private Vector2 position;
 
+    public float lifetime;      // lama hidup lingkaran
+    private float timer;
+    public float playerSize = 1f;
+
     // kecepatan gerak
     public float speed = 2f;
 
@@ -12,6 +16,13 @@ public class ManualCircle : MonoBehaviour
     public GameObject smokePrefab;
     public float smokeSpawnRate = 0.1f; // 1 asap setiap 0.1 detik
     private float smokeTimer = 0f;
+    private SpriteRenderer sr;
+
+    void Awake()
+    {
+        timer += Time.deltaTime;
+        sr = GetComponent<SpriteRenderer>();
+    }
 
     void Start()
     {
@@ -21,6 +32,12 @@ public class ManualCircle : MonoBehaviour
 
     void Update()
     {
+        Awake();
+        if (timer >= lifetime && sr != null)
+        {
+            sr.color = new Color(1f, 1f, 1f, 1f);
+        }
+
         Vector2 translation = Vector2.zero;
 
         // membaca input manual (tanpa Input.GetAxis)
@@ -76,12 +93,24 @@ public class ManualCircle : MonoBehaviour
             sp.SetStartPosition(position);
     }
 
+    public void EatFood()
+    {
+        playerSize += 0.01f;
+        transform.localScale = new Vector3(playerSize, playerSize, 1);
+        if (sr != null)
+        {
+            sr.color = new Color(0f, 0f, 0.502f, 1f);
+            lifetime = timer + 0.5f;
+        }
+    }
+
     // ======== DETEKSI MAKAN SEGITIGA ========
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Deteksi jika menabrak objek dengan nama mengandung "Triangle"
         if (other.gameObject.name.Contains("Triangle"))
         {
+            EatFood();
             Debug.Log("Nyam! Makan segitiga.");
             Destroy(other.gameObject);
 
