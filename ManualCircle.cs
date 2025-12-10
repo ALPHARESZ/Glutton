@@ -7,7 +7,8 @@ public class ManualCircle : MonoBehaviour
 
     // kecepatan gerak
     public float speed = 2f;
-    
+
+    // Prefab asap
     public GameObject smokePrefab;
     public float smokeSpawnRate = 0.1f; // 1 asap setiap 0.1 detik
     private float smokeTimer = 0f;
@@ -40,7 +41,6 @@ public class ManualCircle : MonoBehaviour
             translation = translation.normalized * speed * Time.deltaTime;
 
         // transformasi translasi (manual)
-        // P' = P + T
         position = position + translation;
 
         // update ke transform unity (boleh, karena ini hanya assign posisi)
@@ -59,21 +59,35 @@ public class ManualCircle : MonoBehaviour
         }
         else
         {
-            // reset timer agar tidak meledak saat ditekan lagi
-            smokeTimer = smokeSpawnRate;
+            smokeTimer = 0f; // reset agar tidak stuck setelah ditekan lagi
         }
     }
 
     void SpawnSmoke()
     {
-            GameObject s = Instantiate(
-                smokePrefab, 
-                new Vector3(position.x, position.y, 0f),
-                Quaternion.identity
-                );
+        GameObject s = Instantiate(
+            smokePrefab,
+            new Vector3(position.x, position.y, 0f),
+            Quaternion.identity
+        );
 
         SmokeParticle sp = s.GetComponent<SmokeParticle>();
-        sp.SetStartPosition(position);
+        if (sp != null)
+            sp.SetStartPosition(position);
+    }
+
+    // ======== DETEKSI MAKAN SEGITIGA ========
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Deteksi jika menabrak objek dengan nama mengandung "Triangle"
+        if (other.gameObject.name.Contains("Triangle"))
+        {
+            Debug.Log("Nyam! Makan segitiga.");
+            Destroy(other.gameObject);
+
+            // Tambah skor 10 poin lewat GameManager
+            if (GameManager.Instance != null)
+                GameManager.Instance.AddScore(1);
+        }
     }
 }
-
