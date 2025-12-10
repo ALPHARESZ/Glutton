@@ -11,6 +11,7 @@ public class ManualCircle : MonoBehaviour
 
     // kecepatan gerak
     public float speed = 2f;
+    public float speedBoostMultiplier = 2f;
 
     // Prefab asap
     public GameObject smokePrefab;
@@ -20,7 +21,6 @@ public class ManualCircle : MonoBehaviour
 
     void Awake()
     {
-        timer += Time.deltaTime;
         sr = GetComponent<SpriteRenderer>();
     }
 
@@ -32,7 +32,8 @@ public class ManualCircle : MonoBehaviour
 
     void Update()
     {
-        Awake();
+        timer += Time.deltaTime;
+
         if (timer >= lifetime && sr != null)
         {
             sr.color = new Color(1f, 1f, 1f, 1f);
@@ -52,10 +53,20 @@ public class ManualCircle : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D))
             translation += new Vector2(1, 0);
-
+        
+        bool shifHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         // normalisasi supaya diagonal tidak lebih cepat
         if (translation != Vector2.zero)
+        {
+            // kecepatan dasar dulu
             translation = translation.normalized * speed * Time.deltaTime;
+
+            // ======== BOOST SPEED SAAT SHIFT DITEKAN ========
+            if (shifHeld)
+            {
+                translation *= speedBoostMultiplier;
+            }
+        }
 
         // transformasi translasi (manual)
         position = position + translation;
@@ -64,14 +75,24 @@ public class ManualCircle : MonoBehaviour
         transform.position = new Vector3(position.x, position.y, 0f);
 
         // ======== SPAWN ASAP SAAT SHIFT ========
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        if (shifHeld)
         {
             smokeTimer += Time.deltaTime;
 
             if (smokeTimer >= smokeSpawnRate)
             {
-                SpawnSmoke();
                 smokeTimer = 0f;
+                SpawnSmoke();
+
+                // --- Tambahan: skor berkurang 1 ---
+                if (GameManager.Instance != null)
+                    GameManager.Instance.AddScore(-1);
+
+                // --- Tambahan: lingkaran mengecil ---
+                playerSize -= 0.01f;
+                if (playerSize < 0.2f) playerSize = 0.2f; // batas minimal supaya tidak hilang
+
+                transform.localScale = new Vector3(playerSize, playerSize, 1f);
             }
         }
         else
