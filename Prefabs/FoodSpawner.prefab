@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9332cbecdfdb88438c2f9b8541a1870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriangleSpawner
-  trianglePrefab: {fileID: 0}
+  trianglePrefab: {fileID: 5593824632042142488, guid: f2f2037f5b2f03b409e01f1a4ed94674, type: 3}
   spawnInterval: 2
   minX: -8
   maxX: 8
