@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   score: 20
-  winningScore: 21
+  winningScore: 100
   losingScore: 0
   scoreText: {fileID: 1832598477}
   resultText: {fileID: 2951680363600572236, guid: 3eec2f395fe651f43a773e86e7ff6dd6, type: 3}
@@ -507,6 +507,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1508053408}
     m_Modifications:
+    - target: {fileID: 2495092895838383468, guid: 5eea9821c4872ab4283ee6e7147ff901, type: 3}
+      propertyPath: m_text
+      value: 'Score: 20
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 2976140210788741292, guid: 5eea9821c4872ab4283ee6e7147ff901, type: 3}
       propertyPath: m_Name
       value: ScoreText
