@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -82,11 +83,12 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
 
-        if (resultText != null)
+        if (win)
         {
-            resultText.enabled = true; // pastikan aktif
-            resultText.text = win ? "YOU WIN!" : "YOU LOSE!";
-            resultText.color = win ? Color.green : Color.red;
+            SceneManager.LoadScene("SceneMenang");
+        }
+        else {
+            SceneManager.LoadScene("SceneKalah");
         }
 
         // Tidak perlu tunggu frame, langsung freeze setelah teks tampil
