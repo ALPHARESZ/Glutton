@@ -32,6 +32,10 @@ public class ManualCircle : MonoBehaviour
 
     void Update()
     {
+        // Cegah player bergerak atau mengubah skor setelah game berakhir
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+            return;
+
         timer += Time.deltaTime;
 
         if (timer >= lifetime && sr != null)
@@ -53,29 +57,40 @@ public class ManualCircle : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D))
             translation += new Vector2(1, 0);
-        
-        bool shifHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        // normalisasi supaya diagonal tidak lebih cepat
+
+        bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+        // ======== NORMALISASI MANUAL ========
         if (translation != Vector2.zero)
         {
-            // kecepatan dasar dulu
-            translation = translation.normalized * speed * Time.deltaTime;
+            float length = Mathf.Sqrt(translation.x * translation.x + translation.y * translation.y);
+            if (length > 0)
+            {
+                translation.x /= length;
+                translation.y /= length;
+            }
+
+            // kecepatan dasar
+            translation.x *= speed * Time.deltaTime;
+            translation.y *= speed * Time.deltaTime;
 
             // ======== BOOST SPEED SAAT SHIFT DITEKAN ========
-            if (shifHeld)
+            if (shiftHeld)
             {
-                translation *= speedBoostMultiplier;
+                translation.x *= speedBoostMultiplier;
+                translation.y *= speedBoostMultiplier;
             }
         }
 
-        // transformasi translasi (manual)
-        position = position + translation;
+        // ======== TRANSFORMASI TRANSLASI MANUAL ========
+        position.x += translation.x;
+        position.y += translation.y;
 
-        // update ke transform unity (boleh, karena ini hanya assign posisi)
+        // update ke transform unity (boleh, karena hanya menerapkan hasil perhitungan)
         transform.position = new Vector3(position.x, position.y, 0f);
 
         // ======== SPAWN ASAP SAAT SHIFT ========
-        if (shifHeld)
+        if (shiftHeld)
         {
             smokeTimer += Time.deltaTime;
 
@@ -84,14 +99,13 @@ public class ManualCircle : MonoBehaviour
                 smokeTimer = 0f;
                 SpawnSmoke();
 
-                // --- Tambahan: skor berkurang 1 ---
-                if (GameManager.Instance != null)
+                // --- Skor berkurang 1 ---
+                if (GameManager.Instance != null && !GameManager.Instance.isGameOver)
                     GameManager.Instance.AddScore(-1);
 
-                // --- Tambahan: lingkaran mengecil ---
+                // --- Lingkaran mengecil ---
                 playerSize -= 0.01f;
-                if (playerSize < 0.2f) playerSize = 0.2f; // batas minimal supaya tidak hilang
-
+                if (playerSize < 0.2f) playerSize = 0.2f; // batas minimal
                 transform.localScale = new Vector3(playerSize, playerSize, 1f);
             }
         }
@@ -128,6 +142,9 @@ public class ManualCircle : MonoBehaviour
     // ======== DETEKSI MAKAN SEGITIGA ========
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+            return;
+
         // Deteksi jika menabrak objek dengan nama mengandung "Triangle"
         if (other.gameObject.name.Contains("Triangle"))
         {
@@ -135,7 +152,7 @@ public class ManualCircle : MonoBehaviour
             Debug.Log("Nyam! Makan segitiga.");
             Destroy(other.gameObject);
 
-            // Tambah skor 10 poin lewat GameManager
+            // Tambah skor 1 poin lewat GameManager
             if (GameManager.Instance != null)
                 GameManager.Instance.AddScore(1);
         }

@@ -46,6 +46,9 @@ public class TriangleItem : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+            return;
+
         if (isDead) return;
 
         if (!isAppearing)
