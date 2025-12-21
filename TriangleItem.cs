@@ -85,7 +85,7 @@ public class TriangleItem : MonoBehaviour
             matInstance.SetFloat("_GlowIntensity", 4.0f); 
         }
 
-        // 2. Tunggu sekejap
+        // 2. Tunggu sebentar
         yield return new WaitForSeconds(deathDelay);
 
         // 3. Spawn partikel & Hancurkan

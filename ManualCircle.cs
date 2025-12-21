@@ -93,7 +93,7 @@ public class ManualCircle : MonoBehaviour
         position.x += translation.x;
         position.y += translation.y;
 
-        // update ke transform unity (boleh, karena hanya menerapkan hasil perhitungan)
+        // update ke transform unity
         transform.position = new Vector3(position.x, position.y, 0f);
 
         // ======== SPAWN ASAP SAAT SHIFT ========
@@ -156,7 +156,6 @@ public class ManualCircle : MonoBehaviour
         if (other.gameObject.name.Contains("Triangle"))
         {
             EatFood();
-            Debug.Log("Nyam! Makan segitiga.");
             Destroy(other.gameObject);
 
             // Tambah skor 1 poin lewat GameManager

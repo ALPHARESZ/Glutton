@@ -94,7 +94,7 @@ Shader "Custom/NeonTriangleLit"
                 return normalize(float3(dx, dy, 0.1 + (1.0 - _Bevel))); 
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag (v2f i) : SV_Target 
             {
                 float2 pos = i.uv;
 
