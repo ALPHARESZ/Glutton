@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ManualCircle : MonoBehaviour
 {
+    private Material playerMat;
+
     // posisi manual yang kita simpan sendiri (bukan memakai transform langsung)
     private Vector2 position;
 
@@ -26,6 +28,11 @@ public class ManualCircle : MonoBehaviour
 
     void Start()
     {
+        playerMat = GetComponent<Renderer>().material;
+
+        // warna awal putih
+        playerMat.SetColor("_Color", Color.white);
+
         // inisialisasi posisi awal lingkaran (0,0)
         position = new Vector2(0f, 0f);
     }
@@ -40,7 +47,7 @@ public class ManualCircle : MonoBehaviour
 
         if (timer >= lifetime && sr != null)
         {
-            sr.color = new Color(1f, 1f, 1f, 1f);
+            playerMat.SetColor("_Color", Color.white);
         }
 
         Vector2 translation = Vector2.zero;
@@ -134,7 +141,7 @@ public class ManualCircle : MonoBehaviour
         transform.localScale = new Vector3(playerSize, playerSize, 1);
         if (sr != null)
         {
-            sr.color = new Color(0f, 0f, 0.502f, 1f);
+            playerMat.SetColor("_Color", new Color(0f, 0f, 0.502f, 1f));
             lifetime = timer + 0.5f;
         }
     }
