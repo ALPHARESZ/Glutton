@@ -24,6 +24,11 @@ public class SmokeParticle : MonoBehaviour
         scale = 0.2f;
         alpha = 1f;
         mat = GetComponent<SpriteRenderer>().material;
+        
+        if (mat != null)
+        {
+            mat.SetColor("_Color", new Color(0.5f, 0.5f, 0.5f, alpha));
+        }
     }
 
     // Dipanggil dari luar untuk set posisi awal
