@@ -14,20 +14,19 @@ public class SmokeParticle : MonoBehaviour
     public float lifetime = 2f;          // lama muncul
 
     private float timer;
-
     private Material mat;
 
     void Start()
     {
         // Posisi awal di-set oleh spawner
         timer = 0f;
-        scale = 0.2f;
+        scale = 0.2f; 
         alpha = 1f;
         mat = GetComponent<SpriteRenderer>().material;
         
         if (mat != null)
         {
-            mat.SetColor("_Color", new Color(0.5f, 0.5f, 0.5f, alpha));
+            mat.SetColor("_Color", new Color(0.5f, 0.5f, 0.5f, alpha)); // abu-abu
         }
     }
 
@@ -51,11 +50,10 @@ public class SmokeParticle : MonoBehaviour
         position += new Vector2(0, riseSpeed * Time.deltaTime);
 
         // 2. scaling manual
-        scale += growSpeed * Time.deltaTime;
+        scale += growSpeed * Time.deltaTime; 
 
         // 3. fade manual
         alpha = Mathf.Clamp01(alpha - fadeSpeed * Time.deltaTime);
-
 
         // ============ APPLY TO UNITY ============
         transform.position = new Vector3(position.x, position.y, 0f);

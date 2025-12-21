@@ -96,7 +96,7 @@ public class TriangleManualRotator : MonoBehaviour
         float cosA = 1 - (rad * rad) / 2f + (rad * rad * rad * rad) / 24f;
         float sinA = rad - (rad * rad * rad) / 6f + (rad * rad * rad * rad * rad) / 120f;
 
-        // Set orientasi manual ke Unity (hanya posisi transformasi)
+        // Set orientasi manual ke Unity
         Vector3 rotEuler = new Vector3(0, 0, currentAngle);
         transform.eulerAngles = rotEuler;
     }

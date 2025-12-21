@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Score Settings")]
     public int score = 20;
-    public int winningScore = 30;
+    public int winningScore = 100;
     public int losingScore = 0;
 
     [Header("UI References")]
