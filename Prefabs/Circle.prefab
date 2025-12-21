@@ -60,7 +60,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 0b9d90cd038f7644c9dd6476aa12e8ea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105,7 +105,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3090ed57c2f624b8dee43f9ed097c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ManualCircle
+  lifetime: 0
+  playerSize: 1
   speed: 2
+  speedBoostMultiplier: 2
   smokePrefab: {fileID: 1549125755481041570, guid: 0148d6daa199efa4597f87278f24dff7, type: 3}
   smokeSpawnRate: 0.1
 --- !u!50 &782783110918223589
